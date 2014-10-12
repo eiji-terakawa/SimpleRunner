@@ -104,8 +104,8 @@
     if(self.previusLocaton!=nil){
         if(self.nextLocaton!=nil){
             //　距離を取得
-//            CLLocationDistance distance = [self.previusLocaton distanceFromLocation:self.nextLocaton];
-            double distance = 25;
+            CLLocationDistance distance = [self.previusLocaton distanceFromLocation:self.nextLocaton];
+//            double distance = 25;
 
             self.totalDistance = self.totalDistance + distance;
             self.kmDistance = self.kmDistance + distance;
