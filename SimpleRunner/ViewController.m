@@ -12,7 +12,6 @@
 
 @interface ViewController () <CLLocationManagerDelegate>
 
-- (IBAction)startUP:(UIButton *)sender;
 - (IBAction)start:(UIButton *)sender;
 @property (weak, nonatomic) IBOutlet UILabel *locationLabel;
 @property (weak, nonatomic) IBOutlet UILabel *addressLabel;
@@ -49,23 +48,23 @@
         self.locationManager = [CLLocationManager new];
         self.locationManager.delegate = self;
 
-        self.totalDistance = 0;
-        self.kmDistance = 0;
-        self.mDistance = 0;
-        self.statusStart = FALSE;
-        self.startLabel.titleLabel.text = @"START";
-        
-	    self.startTime = [NSDate date];
-        self.kmTime = [NSDate date];
-        self.mTime = [NSDate date];
-        
+//        self.totalDistance = 0;
+//        self.kmDistance = 0;
+//        self.mDistance = 0;
+//        self.statusStart = FALSE;
+//        self.startLabel.titleLabel.text = @"START";
+//        
+//	    self.startTime = [NSDate date];
+//        self.kmTime = [NSDate date];
+//        self.mTime = [NSDate date];
+//        
         // 位置情報の取得開始
         NSLog(@"位置情報取得開始");
         [self.locationManager startUpdatingLocation];
 
-        // タイマーの生成例
-        self.tm = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(timeUp:) userInfo:nil repeats:YES
-         ];
+//        // タイマーの生成
+//        self.tm = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(timeUp:) userInfo:nil repeats:YES
+//         ];
     }
 }
 
@@ -73,8 +72,10 @@
 {
     NSLog(@"viewDidAppear");
     [super viewDidAppear:animated];
-    if(![self.tm isValid]){
-        [self.tm fire];
+    if(self.statusStart == TRUE){
+        if(![self.tm isValid]){
+            [self.tm fire];
+        }
     }
 }
 
@@ -90,10 +91,23 @@
 - (void)timeUp:(NSTimer*)timer{
     NSLog(@"TimeUp");
 
+    NSDate *now = [NSDate date];
+    float tmp= [now timeIntervalSinceDate:self.startTime];
+    // 時
+    int hour = (int)(tmp / 3600);
+    // 分
+    int min = (int)(tmp / 60);
+    // 秒
+    int sec = (int)tmp % 60;
+    
+    self.timeLabel.text = [NSString stringWithFormat:@"%zd時間 %zd分  %zd秒",hour,min,sec];
+
+    
     if(self.previusLocaton!=nil){
         if(self.nextLocaton!=nil){
             //　距離を取得
             CLLocationDistance distance = [self.previusLocaton distanceFromLocation:self.nextLocaton];
+//            double distance = 20;
             self.totalDistance = self.totalDistance + distance;
             self.kmDistance = self.kmDistance + distance;
             self.mDistance = self.mDistance + distance;
@@ -101,24 +115,26 @@
             self.previusLocaton = self.nextLocaton;
             
             if(self.kmDistance > 1000){
-                NSDate *now = [NSDate date];
                 float tmp= [now timeIntervalSinceDate:self.kmTime];
+                self.kmDistance = 0;
+                self.kmTime = now;
                 // 時
                 int hour = (int)(tmp / 3600);
                 // 分
-                int min = (int)(tmp / 60);
+                int min = (int)tmp % 3600 / 60;
                 // 秒
                 int sec = (int)tmp % 60;
                 
                 self.kmLabel.text = [NSString stringWithFormat:@"%zd時間 %zd分  %zd秒",hour,min,sec];
             }
             if(self.mDistance > 100){
-                NSDate *now = [NSDate date];
                 float tmp= [now timeIntervalSinceDate:self.mTime];
+                self.mDistance = 0;
+                self.mTime = now;
                 // 時
                 int hour = (int)(tmp / 3600);
                 // 分
-                int min = (int)(tmp / 60);
+                int min = (int)tmp % 3600 / 60;
                 // 秒
                 int sec = (int)tmp % 60;
                 
@@ -129,7 +145,7 @@
             NSLog(@"distance:%f", distance);
             NSLog(@"total distance:%f", self.totalDistance);
             if(self.totalDistance < 1000){
-                self.distanceLabel.text=[NSString stringWithFormat:@"%zdm",self.totalDistance];
+                self.distanceLabel.text=[NSString stringWithFormat:@"%zdm",(int)self.totalDistance];
             }else{
                 self.distanceLabel.text=[NSString stringWithFormat:@"%.2fkm",self.totalDistance/1000];
             }
@@ -137,24 +153,39 @@
     }
 }
 
-- (IBAction)startUP:(UIButton *)sender {
-//    if(self.statusStart == FALSE){
-//        self.startLabel.titleLabel.text = @"END";
-//        self.statusStart = TRUE;
-//    }else{
-//        self.startLabel.titleLabel.text = @"START";
-//        self.statusStart = FALSE;
-//    }
-}
-
 - (IBAction)start:(UIButton *)sender {
-//    if(self.statusStart == FALSE){
-//        self.startLabel.titleLabel.text = @"END";
-//        self.statusStart = TRUE;
-//    }else{
-//        self.startLabel.titleLabel.text = @"START";
-//        self.statusStart = FALSE;
-//    }
+    NSLog(@"toutch");
+    if(self.statusStart == FALSE){
+        NSLog(@"END");
+        [self.startLabel setTitle:@"END" forState:UIControlStateNormal];
+        self.statusStart = TRUE;
+
+        self.totalDistance = 0;
+        self.kmDistance = 0;
+        self.mDistance = 0;
+        
+        self.startTime = [NSDate date];
+        self.kmTime = [NSDate date];
+        self.mTime = [NSDate date];
+
+        // タイマーの生成
+        self.tm = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(timeUp:) userInfo:nil repeats:YES
+                   ];
+
+        if(![self.tm isValid]){
+            [self.tm fire];
+        }
+    
+    
+    
+    }else{
+        NSLog(@"START");
+        [self.startLabel setTitle:@"START" forState:UIControlStateNormal];
+        self.statusStart = FALSE;
+        if([self.tm isValid]){
+            [self.tm invalidate];
+        }
+    }
 }
 
 // 位置情報が更新されるたびに呼ばれる
@@ -179,6 +210,7 @@
     NSLog(@"現在設定");
     self.nextLocaton = newLocation;
     
+//    return;
     // 住所を取得
     CLGeocoder *geocoder = [CLGeocoder new];
     CLLocation *location = [[CLLocation new] initWithLatitude:newLocation.coordinate.latitude
