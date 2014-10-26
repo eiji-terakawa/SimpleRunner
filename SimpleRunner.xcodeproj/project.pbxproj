@@ -18,6 +18,7 @@
 		256C5ECD19E95CF500B96F5F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 256C5ECC19E95CF500B96F5F /* CoreGraphics.framework */; };
 		256C5ECF19E95D0300B96F5F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 256C5ECE19E95D0300B96F5F /* UIKit.framework */; };
 		256C5ED119E95D0D00B96F5F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 256C5ED019E95D0D00B96F5F /* Foundation.framework */; };
+		25BBB57E19FCECF8005977F1 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 25BBB57D19FCECF8005977F1 /* Settings.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +49,7 @@
 		256C5ECC19E95CF500B96F5F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		256C5ECE19E95D0300B96F5F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		256C5ED019E95D0D00B96F5F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		25BBB57D19FCECF8005977F1 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +77,7 @@
 		256C5E9719E9587100B96F5F = {
 			isa = PBXGroup;
 			children = (
+				25BBB57D19FCECF8005977F1 /* Settings.bundle */,
 				256C5ED019E95D0D00B96F5F /* Foundation.framework */,
 				256C5ECE19E95D0300B96F5F /* UIKit.framework */,
 				256C5ECC19E95CF500B96F5F /* CoreGraphics.framework */,
@@ -216,6 +219,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				25BBB57E19FCECF8005977F1 /* Settings.bundle in Resources */,
 				256C5EAF19E9587100B96F5F /* Main.storyboard in Resources */,
 				256C5EB419E9587100B96F5F /* LaunchScreen.xib in Resources */,
 				256C5EB119E9587100B96F5F /* Images.xcassets in Resources */,
